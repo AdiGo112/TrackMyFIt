@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+/* ───────────────────────────────────────────────────────────────
+   Chalk & Plates
+   The interface is monochrome graphite + bone. The ONLY saturated
+   colour in the app is the IWF competition plate code, so colour
+   always means weight — never decoration.
+   ─────────────────────────────────────────────────────────────── */
+
+@theme {
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex), ui-monospace, "SF Mono", monospace;
+
+  --color-bg: #0c0d0f;
+  --color-surface: #141619;
+  --color-raised: #1c1f24;
+  --color-line: #262a30;
+  --color-edge: #383e46;
+  --color-ink: #f2efe9;
+  --color-ink2: #a0a5ad;
+  --color-ink3: #6b7078;
+
+  /* IWF / IPF calibrated plate colours */
+  --color-p25: #e23a2e;
+  --color-p20: #2d6fd1;
+  --color-p15: #e8b830;
+  --color-p10: #2e9e5b;
+  --color-p5: #e8e6e1;
+  --color-p2: #b02b22;
+  --color-p1: #98a1ab;
+
+  --radius-card: 12px;
+}
+
+:root {
+  /* barbell knurling: the cross-hatch grip pattern, used sparingly */
+  --knurl:
+    repeating-linear-gradient(45deg, transparent 0 3px, rgb(242 239 233 / 0.035) 3px 4px),
+    repeating-linear-gradient(-45deg, transparent 0 3px, rgb(242 239 233 / 0.035) 3px 4px);
+}
+
+html { color-scheme: dark; }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  overscroll-behavior-y: none;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection { background: var(--color-ink); color: var(--color-bg); }
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@layer components {
+  /* ── type roles ────────────────────────────────────────────── */
+
+  /* Display: semi-expanded industrial grotesque, like stencilled
+     equipment signage. The width axis is what makes it not-Inter. */
+  .display {
+    font-variation-settings: "wdth" 112;
+    @apply font-bold uppercase leading-[0.95] tracking-[-0.01em];
+  }
+
+  /* Eyebrow: the utility face doing real work — reads as a stencilled
+     label on a rack, and separates structure from content. */
+  .eyebrow {
+    @apply font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em];
+    color: var(--color-ink3);
+  }
+
+  .num { @apply font-mono tabular-nums; }
+
+  .knurl { background-image: var(--knurl); }
+
+  /* ── surfaces ──────────────────────────────────────────────── */
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    @apply rounded-[12px];
+  }
+
+  .well {
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    @apply rounded-[10px];
+  }
+
+  /* ── controls (44px floor everywhere: one hand, mid-set) ───── */
+
+  .btn,
+  .btn-primary,
+  .btn-ghost,
+  .btn-quiet {
+    @apply flex min-h-[52px] w-full items-center justify-center gap-2 rounded-[10px]
+           px-4 text-[0.9375rem] font-semibold transition-all duration-150
+           active:scale-[0.985] disabled:pointer-events-none disabled:opacity-35;
+  }
+
+  /* Chalk on slate: the primary action is bone, never a coloured pill. */
+  .btn-primary {
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
+  .btn-primary:hover { background: #fff; }
+
+  .btn-ghost {
+    background: var(--color-raised);
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+  }
+  .btn-ghost:hover { border-color: var(--color-edge); }
+
+  .btn-quiet {
+    background: transparent;
+    color: var(--color-ink2);
+  }
+  .btn-quiet:hover { color: var(--color-ink); }
+
+  .btn-sm {
+    @apply inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5
+           rounded-[9px] px-3 text-[0.8125rem] font-semibold transition-all duration-150
+           active:scale-95 disabled:pointer-events-none disabled:opacity-35;
+    background: var(--color-raised);
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+  }
+  .btn-sm:hover { border-color: var(--color-edge); }
+
+  .input {
+    @apply w-full rounded-[10px] px-3 py-3 text-base outline-none transition-colors;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+  }
+  .input:focus {
+    border-color: var(--color-edge);
+    outline: 2px solid var(--color-ink);
+    outline-offset: -1px;
+  }
+
+  .label {
+    @apply mb-1.5 block font-mono text-[0.6875rem] font-medium uppercase tracking-[0.14em];
+    color: var(--color-ink3);
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5
+           font-mono text-[0.625rem] font-semibold uppercase tracking-[0.1em];
+  }
+
+  .divider { border-top: 1px solid var(--color-line); }
+}
+
+/* ── motion ──────────────────────────────────────────────────── */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: none; }
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse-ring {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+.rise { animation: rise 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.sheet-up { animation: sheet-up 0.26s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+.fade-in { animation: fade 0.2s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* number inputs: spinners are unusable on a phone, and we ship steppers */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+
+/* keep the sticky session bar clear of the iOS home indicator */
+.safe-b { padding-bottom: env(safe-area-inset-bottom); }
+
+/* Confirm sheet. Native <dialog> so focus trapping, Esc and the inert
+   background are the platform's job, not ours. */
+.confirm-dialog {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: 32rem;
+  max-height: none;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+  border: 1px solid var(--color-line);
+  border-bottom: 0;
+  border-radius: 16px 16px 0 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+.confirm-dialog::backdrop {
+  background: rgb(0 0 0 / 0.62);
+  backdrop-filter: blur(3px);
+}
+
+/* toasts enter from the top edge they are anchored to */
+@keyframes drop {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: none; }
+}
+.drop { animation: drop 0.28s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
